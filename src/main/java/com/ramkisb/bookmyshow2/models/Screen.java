@@ -4,6 +4,8 @@ import java.util.List;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
@@ -19,8 +21,9 @@ public class Screen extends BaseModel{
     @OneToMany
     private List<Seat> seats;
     
-    //@Enumerated(EnumType.ORDINAL)
-    @ElementCollection
+    @Enumerated(EnumType.ORDINAL)
+    @ElementCollection 
+    //the above line makes a mapping table so that one Screen id and many rows of ENUM feature names mapped to it in sql table
     private List<Feature> features;
     
     

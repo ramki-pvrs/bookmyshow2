@@ -240,6 +240,8 @@ likst Show Seat status, booking data ...
 
 @Repository annotation for repository classes
 
+@Transactional(isolation = Isolation.SERIALIZABLE)
+
 
 ## Booking Amount calc
 
@@ -253,5 +255,49 @@ likst Show Seat status, booking data ...
 -- but seat does not have price
 -- ShowSeatType has price
 - so now using show, and found seat type, get the price x with number of seats
+
+-- you will need showSeatType using show - so ShowSeatTypeRepository
+-- SELECT * FROM ShowSeatType WHERE show = ?
+
+controller - dto - service - repository
+
+## Attempt - 2:
+controller calls service to get a specific service done; controller is only request - response management object
+
+the service request generally should retunr a object, in ticket BookingService, it returns  a Booking object
+
+Workflow:
+ When I click Book (tickets) that means, 
+  - I have already selected my show, seat types and seats
+  - system knows my user id
+  - showSeatIds, showId, userId is available from me (Client) to the backend controller logic to handle the booking request
+   - what is handling the booking request means
+    - you have to check availability of those requested seats, 
+    - calculate the amount
+    - show the summary page to user
+    - on confirmation, direct the user to payment gateway
+    - on payment success, mark the seats booked, 
+    - return booking id and details to user (response object in controller will receive the return from service object)
+
+      - from request object you get input data (one or more) - its a dto
+      - on response object you set results (one or more) - its a dto
+
+
+    - in the service, @Transactional at method level, service is inside the transaction; not only the dB ops
+       -- later lets learn how to do transaction only for steps inside the method
+    
+    when you want data from dB or you want to save data to dB (any CRUD ops), you need to set JPA Repositories interfaces in your project ; your interface will extend JpaRepository<User, Integer> interface provided by Spring Boot;l Integer here is primary key of your dB table for User, and User is the db model object, one user table row from dB (even after complex joins when required)
+    
+    controller engages service object
+    service engages dto and repository objects
+    
+    JPA Repository interface has findById kind of method and when you find a user by passed Id, it should return a User object (id, name, email....)
+    but instead of direct user object, it returns an Optional, Optional<user> just to handle null responses; this is more so when individual user object is expected which may return null
+    but if you are expecting a list of items, Optional may be not required because empty list [] is a valid object and NullPointerException may not be thrown
+    
+    
+BookingController - only request - response handler
+DTOs like BookTicketRequestDTO and BookTicketResponstDTO are Data Transfer Object
+
 
 

@@ -17,7 +17,7 @@ public class BookingService {
         int userId
        ) {
             /*
-             1. get User object from passed userId
+             1. get User object from passed userId(in request object) 
              2. get Show object from passed showId
              //--- actual dB transaction may start here
              3. get all ShowSeat objects using showSeatIds (multiple)

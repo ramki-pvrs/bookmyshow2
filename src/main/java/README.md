@@ -1,5 +1,5 @@
 # Getting Started
-
+https://github.com/MohitSharma-dev/BookmyshowApr23/tree/master
 ### Reference Documentation
 For further reference, please consider the following sections:
 
@@ -272,13 +272,14 @@ Workflow:
   - system knows my user id
   - showSeatIds, showId, userId is available from me (Client) to the backend controller logic to handle the booking request
    - what is handling the booking request means
-    - you have to check availability of those requested seats, 
+    - you have to check availability of those requested seats,  (if noy throw err and exit this process)
     - calculate the amount
     - show the summary page to user
     - on confirmation, direct the user to payment gateway
     - on payment success, mark the seats booked, 
     - return booking id and details to user (response object in controller will receive the return from service object)
 
+	   
       - from request object you get input data (one or more) - its a dto
       - on response object you set results (one or more) - its a dto
 
@@ -295,6 +296,7 @@ Workflow:
     but instead of direct user object, it returns an Optional, Optional<user> just to handle null responses; this is more so when individual user object is expected which may return null
     but if you are expecting a list of items, Optional may be not required because empty list [] is a valid object and NullPointerException may not be thrown
     
+    JPA Repository interface has methods to find as well as .save to save the object (assuming all db not null column values are present)
     
 BookingController - only request - response handler
 DTOs like BookTicketRequestDTO and BookTicketResponstDTO are Data Transfer Object
